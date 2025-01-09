@@ -13,23 +13,23 @@ opacity = 1.0
 history = 100000
 
 [font]
-builtin_box_drawing = false
-size = 13
+builtin_box_drawing = true
+size = 14
 
 [font.normal]
-family = "JetBrainsMono NF"
+family = "SauceCodePro NF"
 style = "Regular"
 
 [font.bold]
-family = "JetBrainsMono NF"
+family = "SauceCodePro NF"
 style = "Bold"
 
 [font.italic]
-family = "JetBrainsMono NF"
+family = "SauceCodePro NF"
 style = "Italic"
 
 [font.bold_italic]
-family = "JetBrainsMono NF"
+family = "SauceCodePro NF"
 style = "Bold Italic"
 
 [font.glyph_offset]
