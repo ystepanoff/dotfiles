@@ -141,5 +141,5 @@ key    = "End"
 mods   = "Shift"
 
 [mouse]
-hide_when_typing = true
+hide_when_typing = false
 
