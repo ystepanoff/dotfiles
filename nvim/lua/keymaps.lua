@@ -8,3 +8,7 @@ map('n', '<leader>fh', function() require('telescope.builtin').help_tags() end, 
 
 -- File explorer
 map('n', '<leader>e', function() vim.cmd('Oil') end, { desc = 'File explorer (oil)' })
+
+-- Which Key
+map('n', '<leader>?', function() require('which-key').show() end, { desc = 'Show which-key popup' })
+
