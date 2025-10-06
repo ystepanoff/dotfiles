@@ -1,4 +1,5 @@
 return {
+  { import = 'plugins.colours' },
   { import = 'plugins.core' },
   { import = 'plugins.telescope' },
   { import = 'plugins.oil' },
