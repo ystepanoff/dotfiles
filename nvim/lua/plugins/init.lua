@@ -4,4 +4,5 @@ return {
   { import = 'plugins.telescope' },
   { import = 'plugins.oil' },
   { import = 'plugins.treesitter' },
+  { import = 'plugins.lsp' },
 }
