@@ -5,4 +5,8 @@ return {
   { import = 'plugins.oil' },
   { import = 'plugins.treesitter' },
   { import = 'plugins.lsp' },
+  { import = 'plugins.cmp' },
+  { import = 'plugins.gitsigns' },
+  { import = 'plugins.lualine' },
+  { import = 'plugins.lazygit' },
 }
