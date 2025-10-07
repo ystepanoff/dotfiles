@@ -10,4 +10,7 @@ return {
   { import = 'plugins.lualine' },
   { import = 'plugins.lazygit' },
   { import = 'plugins.sleuth' },
+  { import = 'plugins.editing' },
+  { import = 'plugins.todo' },
+  { import = 'plugins.aerial' },
 }
