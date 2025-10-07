@@ -9,4 +9,5 @@ return {
   { import = 'plugins.gitsigns' },
   { import = 'plugins.lualine' },
   { import = 'plugins.lazygit' },
+  { import = 'plugins.sleuth' },
 }

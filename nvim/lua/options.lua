@@ -13,5 +13,9 @@ o.signcolumn = 'yes'
 o.updatetime = 200
 o.timeout = true
 o.timeoutlen = 500
-o.clipboard = 'unnamedplus' -- use macOS clipboard
-
+o.clipboard = 'unnamedplus'
+o.expandtab = true
+o.shiftwidth = 4
+o.tabstop = 4
+o.softtabstop = 4
+o.smartindent = true
