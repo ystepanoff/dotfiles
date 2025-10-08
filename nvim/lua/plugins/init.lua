@@ -13,4 +13,5 @@ return {
   { import = 'plugins.editing' },
   { import = 'plugins.todo' },
   { import = 'plugins.aerial' },
+  { import = 'plugins.avante' },
 }
