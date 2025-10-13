@@ -14,4 +14,5 @@ return {
   { import = 'plugins.todo' },
   { import = 'plugins.aerial' },
   { import = 'plugins.avante' },
+  { import = 'plugins.bufferline' },
 }
