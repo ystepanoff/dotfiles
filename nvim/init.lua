@@ -1,4 +1,5 @@
 vim.g.mapleader = ' '
+vim.g.python3_host_prog = "/Users/e.stepanov/.pyenv/shims/python"
 
 pcall(require, 'options')
 pcall(require, 'keymaps')
