@@ -8,7 +8,7 @@ return {
 
     require("bufferline").setup({
       options = {
-        diagnostics = "nvim_lsp",
+        diagnostics = false,
         separator_style = "slant",
         show_buffer_close_icons = false,
         show_close_icon = false,
@@ -17,6 +17,7 @@ return {
           {
             filetype = "NvimTree",
             text = "File Explorer",
+            text_align = "left",
             highlight = "Directory",
             separator = true,
           },

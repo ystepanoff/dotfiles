@@ -80,6 +80,14 @@ return {
           end
         end,
       })
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "NvimTree_*",
+        callback = function()
+          if #vim.api.nvim_list_wins() == 1 then
+            require("nvim-tree.api").tree.close()
+          end
+        end,
+      })
     end,
   },
 }
