@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -Eeuo pipefail
 
 ENV_NAME="${1:?usage: $0 <env> (golfdev|imgstaging|img)}"
@@ -22,9 +22,9 @@ esac
 export TMUX=
 
 if ! tmux -L "$SOCK_NAME" has-session -t "$ENV_NAME" 2>/dev/null; then
-  tmux -L "$SOCK_NAME" new-session -d -s "$ENV_NAME" -n "${services[0]}" \
-    "$SSH_LOOP ${services[0]}.${ENV_NAME}.dijon"
-  for svc in "${services[@]:1}"; do
+  tmux -L "$SOCK_NAME" new-session -d -s "$ENV_NAME" -n "${services[1]}" \
+    "$SSH_LOOP ${services[1]}.${ENV_NAME}.dijon"
+  for svc in "${services[@]:2}"; do
     tmux -L "$SOCK_NAME" new-window -t "$ENV_NAME" -n "$svc" \
       "$SSH_LOOP ${svc}.${ENV_NAME}.dijon"
   done
