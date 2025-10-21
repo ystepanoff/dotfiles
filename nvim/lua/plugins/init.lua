@@ -16,4 +16,5 @@ return {
   { import = 'plugins.avante' },
   { import = 'plugins.bufferline' },
   { import = 'plugins.conform' },
+  { import = 'plugins.toggleterm' },
 }
