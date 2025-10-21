@@ -25,6 +25,29 @@ return {
       },
     })
 
+    local function safe_buf_delete()
+      local wins = vim.api.nvim_list_wins()
+      local tree_win = nil
+      for _, w in ipairs(wins) do
+        local b = vim.api.nvim_win_get_buf(w)
+        if vim.bo[b].filetype == 'NvimTree' then
+          tree_win = w
+          break
+        end
+      end
+
+      if tree_win and #wins == 2 then
+        vim.cmd('wincmd p')
+      end
+
+      local ok, bd = pcall(require, 'bufdelete')
+      if ok then
+        bd.bufdelete(0, true)
+      else
+        vim.cmd('bdelete')
+      end
+    end
+
     local map = vim.keymap.set
     map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
     map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })

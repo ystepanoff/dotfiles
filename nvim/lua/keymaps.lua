@@ -12,3 +12,5 @@ map('n', '<leader>e', function() vim.cmd('Oil') end, { desc = 'File explorer (oi
 -- Which Key
 map('n', '<leader>?', function() require('which-key').show() end, { desc = 'Show which-key popup' })
 
+-- Conform
+map({ "n", "v" }, "<leader>f", function() require("conform").format({ async = false, lsp_fallback = true }) end, { desc = "Format file" })

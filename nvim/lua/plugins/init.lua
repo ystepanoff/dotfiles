@@ -15,4 +15,5 @@ return {
   { import = 'plugins.aerial' },
   { import = 'plugins.avante' },
   { import = 'plugins.bufferline' },
+  { import = 'plugins.conform' },
 }

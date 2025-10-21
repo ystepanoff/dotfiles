@@ -71,20 +71,8 @@ return {
       require('nvim-tree').setup(opts)
       vim.api.nvim_create_autocmd('QuitPre', {
         callback = function()
-          local wins = vim.api.nvim_list_wins()
-          if #wins == 1 then
-            local bufname = vim.api.nvim_buf_get_name(0)
-            if bufname:match('NvimTree_') then
-              require('nvim-tree.api').tree.close()
-            end
-          end
-        end,
-      })
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = "NvimTree_*",
-        callback = function()
           if #vim.api.nvim_list_wins() == 1 then
-            require("nvim-tree.api").tree.close()
+            require('nvim-tree.api').tree.close()
           end
         end,
       })
