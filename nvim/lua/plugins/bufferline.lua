@@ -51,7 +51,7 @@ return {
     local map = vim.keymap.set
     map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
     map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
-    map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close buffer" })
+    -- map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close buffer" })
     for i = 1, 9 do
       map("n", ("<leader>%d"):format(i), ("<cmd>BufferLineGoToBuffer %d<CR>"):format(i),
         { desc = ("Go to buffer %d"):format(i) })

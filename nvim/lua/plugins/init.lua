@@ -18,4 +18,5 @@ return {
   { import = 'plugins.conform' },
   { import = 'plugins.toggleterm' },
   { import = 'plugins.whichkey' },
+  { import = 'plugins.bufremove' },
 }

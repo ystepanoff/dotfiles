@@ -5,7 +5,7 @@ return {
     plugins = {
       spelling = true,
     },
-    window = {
+    win = {
       border = "single",
     },
   },
