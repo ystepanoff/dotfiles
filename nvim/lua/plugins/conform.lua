@@ -10,13 +10,13 @@ return {
       typescript = { "prettier" },
       typescriptreact = { "prettier" },
       javascriptreact = { "prettier" },
-      json = { "prettier" },
       yaml = { "prettier" },
       markdown = { "prettier" },
       go = { "gofmt" },
       rust = { "rustfmt" },
       sh = { "shfmt" },
       csharp = { "csharpier" },
+      json = { "jq" },
     },
 
     --format_on_save = {
