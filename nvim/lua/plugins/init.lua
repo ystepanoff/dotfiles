@@ -17,4 +17,5 @@ return {
   { import = 'plugins.bufferline' },
   { import = 'plugins.conform' },
   { import = 'plugins.toggleterm' },
+  { import = 'plugins.whichkey' },
 }
