@@ -19,4 +19,5 @@ return {
   { import = 'plugins.toggleterm' },
   { import = 'plugins.whichkey' },
   { import = 'plugins.bufremove' },
+  { import = 'plugins.python.uv' },
 }
