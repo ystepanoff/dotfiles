@@ -14,6 +14,17 @@ tw() {
   fi
 }
 
+pick() {
+  for cmd in "$@"; do
+    local bin="${cmd%% *}"
+    if command -v "$bin" >/dev/null 2>&1; then
+      printf '%s' "$cmd"
+      return 0
+    fi
+  done
+  return 1
+}
+
 # sanity-check helpers
 for f in "$CONFIG_DIR/ssh_loop.sh"; do
   if [[ ! -x "$f" ]]; then
@@ -35,7 +46,15 @@ fi
 tw new-window -t home -n claude \
   "zsh -l -i -c 'aws-cia login && cd \$HOME/sandbox/ && claude; exec zsh -l -i'" || true
 
-# 3) nvim-1 (editor)
+# 3) files (yazi > ranger > plain ls)
+FM="$(pick "yazi" "ranger" "bash -lc 'ls -la'")"
+tw new-window -t home -n files -c "$HOME/sandbox" "$FM" || true
+
+# 4) monitor (btm > htop > top)
+MON="$(pick "btm" "htop" "top")"
+tw new-window -t home -n monitor "$MON" || true
+
+# 5) nvim-1 (editor)
 tw new-window -t home -n nvim-1 -c "$HOME/sandbox" "nvim" || true
 
 # attach/switch
