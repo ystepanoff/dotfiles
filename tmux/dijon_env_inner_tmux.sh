@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 set -Eeuo pipefail
+unsetopt KSH_ARRAYS
 
 ENV_NAME="${1:?usage: $0 <env> (golfdev|imgstaging|img)}"
 SOCK_NAME="inner-${ENV_NAME}"
@@ -21,10 +22,14 @@ esac
 
 export TMUX=
 
+tmux -L "$SOCK_NAME" set -g remain-on-exit on 2>/dev/null || true
+
 if ! tmux -L "$SOCK_NAME" has-session -t "$ENV_NAME" 2>/dev/null; then
   tmux -L "$SOCK_NAME" new-session -d -s "$ENV_NAME" -n "${services[1]}" \
     "$SSH_LOOP ${services[1]}.${ENV_NAME}.dijon"
-  for svc in "${services[@]:2}"; do
+
+  for ((i=2; i<=${#services}; i++)); do
+    svc="${services[i]}"
     tmux -L "$SOCK_NAME" new-window -t "$ENV_NAME" -n "$svc" \
       "$SSH_LOOP ${svc}.${ENV_NAME}.dijon"
   done

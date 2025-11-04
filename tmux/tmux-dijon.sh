@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 set -uo pipefail
 
+ssh-add
 tmux kill-session -t dijon
 
 CONFIG_DIR="$HOME/.config/tmux"
