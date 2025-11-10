@@ -3,9 +3,9 @@ set -Eeuo pipefail
 unsetopt KSH_ARRAYS
 
 ENV_NAME="${1:?usage: $0 <env> (golfdev|imgstaging|img)}"
-SOCK_NAME="inner-${ENV_NAME}"
-INNER_CONF="$HOME/.config/tmux/inner-tmux.conf"
-SSH_LOOP="$HOME/.config/tmux/ssh_loop.sh"
+SOCK_NAME="tmux-inner-${ENV_NAME}"
+INNER_CONF="$HOME/.config/tmux/tmux-inner.conf"
+SSH_LOOP="$HOME/.config/tmux/ssh-loop.sh"
 
 case "$ENV_NAME" in
   golfdev)

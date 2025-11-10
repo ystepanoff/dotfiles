@@ -16,7 +16,7 @@ tw() {
 }
 
 # sanity-check helpers
-for f in "$CONFIG_DIR/ssh_loop.sh" "$CONFIG_DIR/dijon_env_inner_tmux.sh"; do
+for f in "$CONFIG_DIR/ssh-loop.sh" "$CONFIG_DIR/tmux-inner-dijon-env.sh"; do
   if [[ ! -x "$f" ]]; then
     log "Helper missing or not executable: $f"
   fi
@@ -54,14 +54,18 @@ tw new-window -t dijon -n inspect \
 # 5–7) nested envs (inner tmux per env)
 for env in golfdev imgstaging img; do
   tw new-window -t dijon -n "$env" \
-     "$CONFIG_DIR/dijon_env_inner_tmux.sh $env" || true
+     "$CONFIG_DIR/tmux-inner-dijon-env.sh $env" || true
 done
 
 # 8) claude (interactive SSO then claude; stay in shell afterward)
 tw new-window -t dijon -n claude \
   "zsh -l -i -c 'aws-cia login && cd \$HOME/dijon && claude; exec zsh -l -i'" || true
 
-# 9) nvim-1 (editor)
+# 9) codex 
+tw new-window -t dijon -n codex \
+  "zsh -l -i -c 'cd \$HOME/dijon && codex; exec zsh -l -i'" || true
+
+# 10) nvim-1 (editor)
 tw new-window -t dijon -n nvim-1 -c "$HOME/dijon" "nvim" || true
 
 # remove bootstrap if it still exists
