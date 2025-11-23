@@ -14,7 +14,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     keys = {
       { '<leader>e', function() require('nvim-tree.api').tree.toggle({ find_file = true, focus = true }) end, desc = 'Explorer (nvim-tree)' },
-      { '<leader>E', function() require('nvim-tree.api').tree.find_file({ open = true, focus = true }) end, desc = 'Reveal file in explorer' },
+      { '<leader>E', function() require('nvim-tree.api').tree.find_file({ open = true, focus = true }) end,   desc = 'Reveal file in explorer' },
     },
     opts = {
       on_attach = function(bufnr)
@@ -57,7 +57,7 @@ return {
       actions = {
         open_file = {
           quit_on_open = false,
-          resize_window = false,
+          resize_window = true,
           window_picker = {
             enable = true,
             chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
@@ -74,6 +74,12 @@ return {
           if #vim.api.nvim_list_wins() == 1 then
             require('nvim-tree.api').tree.close()
           end
+        end,
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "NvimTree",
+        callback = function()
+          pcall(vim.api.nvim_win_set_option, 0, "winfixwidth", true)
         end,
       })
     end,
