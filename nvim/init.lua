@@ -13,3 +13,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup('plugins')
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*",
+  callback = function()
+    vim.b.which_key_disable = true
+  end,
+})
