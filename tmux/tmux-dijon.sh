@@ -45,11 +45,11 @@ tw select-pane  -t dijon:shell.1 || true
 
 # 3) deploy (auto-reconnect, cd into path)
 tw new-window -t dijon -n deploy \
-  "$CONFIG_DIR/ssh-loop.sh deployhost.golf.dijon 'cd /home/dijon/yegor/release-golf-system && bash -l'" || true
+  "$CONFIG_DIR/ssh-loop.sh deployhost.golf.dijon 'cd /home/dijon/yegor/release-golf-system && bash -l -i'" || true
 
 # 4) inspect (ssh, cd, activate venv)
 tw new-window -t dijon -n inspect \
-  "$CONFIG_DIR/ssh-loop.sh deployhost.golf.dijon 'cd /home/dijon/yegor/inspect-golf-system && source venv/bin/activate && exec bash -l'" || true
+  "$CONFIG_DIR/ssh-loop.sh deployhost.golf.dijon 'cd /home/dijon/yegor/inspect-golf-system && source venv/bin/activate && exec bash -l -i'" || true
 
 # 5–7) nested envs (inner tmux per env)
 for env in golfdev imgstaging img; do

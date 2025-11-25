@@ -17,13 +17,17 @@ KEEPALIVE_OPTS=(
   -o ExitOnForwardFailure=no
 )
 
+PS1_VALUE='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+# Use PROMPT_COMMAND to force PS1 before every prompt, surviving bash -l overrides
+SHELL_INIT='source ~/.bashrc 2>/dev/null; export __PS1="'"${PS1_VALUE}"'"; export PROMPT_COMMAND='"'"'PS1="$__PS1"'"'"'; '
+
 while true; do
   echo "[ssh_loop] $(date '+%F %T') connecting to ${HOST} …"
   if [[ ${#REMOTE_CMD[@]} -gt 0 ]]; then
-    # -tt to force a TTY so shells/venvs behave; never ‘exec’ here so the loop survives
-    ssh -tt "${KEEPALIVE_OPTS[@]}" -- "${HOST}" "${REMOTE_CMD[@]}" || true
+    # -tt to force a TTY so shells/venvs behave; never 'exec' here so the loop survives
+    ssh -tt "${KEEPALIVE_OPTS[@]}" -- "${HOST}" "${SHELL_INIT}${REMOTE_CMD[*]}" || true
   else
-    ssh -tt "${KEEPALIVE_OPTS[@]}" -- "${HOST}" || true
+    ssh -tt "${KEEPALIVE_OPTS[@]}" -- "${HOST}" "${SHELL_INIT}exec bash --norc" || true
   fi
   code=$?
   echo "[ssh_loop] $(date '+%F %T') ssh exited (code ${code}). Reconnecting in 2s. Press Ctrl-C to stop."
