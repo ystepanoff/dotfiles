@@ -20,4 +20,5 @@ return {
   { import = 'plugins.whichkey' },
   { import = 'plugins.bufremove' },
   { import = 'plugins.python.uv' },
+  { import = 'plugins.vimtex' },
 }
