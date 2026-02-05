@@ -47,9 +47,15 @@ return {
       local row = wh - content_h
       local col = 0
 
+      local dir = vim.fn.expand("%:p:h")
+      if dir == "" or vim.fn.isdirectory(dir) == 0 then
+        dir = vim.fn.getcwd()
+      end
+
       if not floating_term then
         floating_term = Terminal:new({
           direction = "float",
+          dir = dir,
           float_opts = {
             relative = "win",
             anchor   = "NW",
@@ -76,6 +82,10 @@ return {
       end
 
       floating_term:toggle()
+
+      if floating_term:is_open() and floating_term.dir ~= dir then
+        floating_term:change_dir(dir)
+      end
     end
 
     vim.keymap.set("n", "<leader>t", toggle_bottom_floating_term, { desc = "Toggle bottom terminal (window-local float)" })
