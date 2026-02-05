@@ -22,4 +22,5 @@ return {
   { import = 'plugins.python.uv' },
   { import = 'plugins.vimtex' },
   { import = 'plugins.copilot' },
+  { import = 'plugins.navic' },
 }
