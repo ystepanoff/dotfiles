@@ -48,7 +48,11 @@ return {
             [vim.diagnostic.severity.INFO]  = icons.Info,
           },
         },
-        virtual_text = { prefix = "●", spacing = 2 },
+        virtual_text = {
+          prefix = "●",
+          spacing = 2,
+          severity = { min = vim.diagnostic.severity.WARN },
+        },
         float = { border = "rounded" },
         severity_sort = true,
         update_in_insert = false,
@@ -152,14 +156,29 @@ return {
       vim.lsp.config('gopls',          { capabilities = capabilities })
       vim.lsp.config('rust_analyzer',  { capabilities = capabilities })
 
+      local mason_bin = vim.fn.stdpath('data') .. '/mason/bin'
       vim.lsp.config('omnisharp', {
+        cmd = { mason_bin .. '/OmniSharp', '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
         capabilities = capabilities,
         settings = {
           omnisharp = {
             enableEditorConfigSupport = true,
             enableRoslynAnalyzers     = true,
             organizeImportsOnFormat   = true,
+            analyzeOpenDocumentsOnly  = true,
           },
+        },
+        handlers = {
+          ['textDocument/publishDiagnostics'] = function(err, result, ctx, config)
+            if result and result.diagnostics then
+              result.diagnostics = vim.tbl_filter(function(d)
+                local code = tostring(d.code or '')
+                if code:match('^IDE') then return false end
+                return d.severity <= vim.lsp.protocol.DiagnosticSeverity.Warning
+              end, result.diagnostics)
+            end
+            vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+          end,
         },
       })
 

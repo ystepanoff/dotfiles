@@ -35,9 +35,10 @@ return {
             else fallback() end
           end, { 'i', 's' }),
         }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' }, { name = 'path' }, { name = 'buffer' }, { name = 'luasnip' }
-        }),
+        sources = cmp.config.sources(
+          { { name = 'nvim_lsp' }, { name = 'luasnip' } },
+          { { name = 'path' }, { name = 'buffer' } }
+        ),
       })
     end,
   },
