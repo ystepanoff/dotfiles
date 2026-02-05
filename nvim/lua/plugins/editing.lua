@@ -14,5 +14,17 @@ return {
     end
   },
   { 'echasnovski/mini.surround', version = '*', opts = {} },
+  { 'echasnovski/mini.move', version = '*', opts = {
+    mappings = {
+      left = '<e',
+      right = '>e',
+      down = ']e',
+      up = '[e',
+      line_left = '<e',
+      line_right = '>e',
+      line_down = ']e',
+      line_up = '[e',
+    },
+  } },
   { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = {} },
 }
