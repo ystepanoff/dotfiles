@@ -23,4 +23,5 @@ return {
   { import = 'plugins.vimtex' },
   { import = 'plugins.copilot' },
   { import = 'plugins.navic' },
+  { import = 'plugins.illuminate' },
 }
