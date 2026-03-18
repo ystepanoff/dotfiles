@@ -143,3 +143,8 @@ mods   = "Shift"
 [mouse]
 hide_when_typing = false
 
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001b\r"
