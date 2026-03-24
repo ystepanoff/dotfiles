@@ -7,8 +7,8 @@ return {
     config = function()
       do
         local util = vim.lsp.util
-        local orig = util.jump_to_location
-        util.jump_to_location = function(location, enc, opts)
+        local orig = util.show_document
+        util.show_document = function(location, enc, opts)
           local loc = location or {}
           local uri = loc.uri or loc.targetUri
           local range = loc.range or loc.targetSelectionRange or loc.targetRange
@@ -81,8 +81,11 @@ return {
 
           map('gd', function()
             local params = vim.lsp.util.make_position_params()
-            local clients = vim.lsp.get_clients({ bufnr = bufnr })
-            if #clients == 0 then return end
+            local clients = vim.lsp.get_clients({ bufnr = bufnr, method = 'textDocument/definition' })
+            if #clients == 0 then
+              vim.notify('No LSP client supports textDocument/definition', vim.log.levels.WARN)
+              return
+            end
             clients[1].request('textDocument/definition', params, function(err, result)
               if err then
                 vim.notify('LSP definition error: ' .. err.message, vim.log.levels.WARN)
@@ -96,7 +99,7 @@ return {
                 vim.notify('No file-backed definitions found (likely virtual/library).', vim.log.levels.INFO)
                 return
               end
-              vim.lsp.util.jump_to_location(files_only[1], 'utf-16')
+              vim.lsp.util.show_document(files_only[1], 'utf-16', { focus = true })
             end, bufnr)
           end, 'Goto definition (safe)')
 
