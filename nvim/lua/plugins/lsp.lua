@@ -2,6 +2,7 @@ return {
   { 'williamboman/mason.nvim', config = true },
   { 'williamboman/mason-lspconfig.nvim' },
   { 'neovim/nvim-lspconfig' },
+  { 'Hoffs/omnisharp-extended-lsp.nvim' },
   {
     'hrsh7th/cmp-nvim-lsp',
     config = function()
@@ -65,6 +66,18 @@ return {
             vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
           end
 
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.name == 'omnisharp' then
+            local ok, ext = pcall(require, 'omnisharp_extended')
+            if ok then
+              map('gd', ext.lsp_definition,         'Goto definition (omnisharp-extended)')
+              map('gD', ext.lsp_type_definition,    'Type definition (omnisharp-extended)')
+              map('gr', ext.lsp_references,         'References (omnisharp-extended)')
+              map('gi', ext.lsp_implementation,     'Implementations (omnisharp-extended)')
+              return
+            end
+          end
+
           local function filter_file_locs(locs)
             local out = {}
             for _, loc in ipairs(locs or {}) do
@@ -80,7 +93,7 @@ return {
           end
 
           map('gd', function()
-            local params = vim.lsp.util.make_position_params()
+            local params = vim.lsp.util.make_position_params(0, 'utf-16')
             local clients = vim.lsp.get_clients({ bufnr = bufnr, method = 'textDocument/definition' })
             if #clients == 0 then
               vim.notify('No LSP client supports textDocument/definition', vim.log.levels.WARN)
@@ -110,10 +123,13 @@ return {
           map('K',  vim.lsp.buf.hover,               'Hover docs')
           map('<leader>rn', vim.lsp.buf.rename,      'Rename symbol')
           map('<leader>ca', vim.lsp.buf.code_action, 'Code action')
-          map('[d', vim.diagnostic.goto_prev,        'Prev diagnostic')
-          map(']d', vim.diagnostic.goto_next,        'Next diagnostic')
+          map('[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Prev diagnostic')
+          map(']d', function() vim.diagnostic.jump({ count =  1, float = true }) end, 'Next diagnostic')
 
-          if vim.lsp.inlay_hint then pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr }) end
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+            pcall(vim.lsp.inlay_hint.enable, true, { bufnr = bufnr })
+          end
         end,
       })
 
@@ -180,7 +196,7 @@ return {
                 return d.severity <= vim.lsp.protocol.DiagnosticSeverity.Warning
               end, result.diagnostics)
             end
-            vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+            return vim.lsp.handlers['textDocument/publishDiagnostics'](err, result, ctx, config)
           end,
         },
       })

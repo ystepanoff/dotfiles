@@ -8,6 +8,7 @@ return {
         patterns = { '.git', 'Makefile', 'package.json', 'pyproject.toml', 'go.mod' },
       })
       require('telescope').load_extension('projects')
+      vim.keymap.set('n', '<leader>fp', '<cmd>Telescope projects<CR>', { desc = 'Find projects' })
     end,
   },
 }

@@ -12,10 +12,10 @@ return {
     config = function(_, opts)
       require('illuminate').configure(opts)
 
-      vim.keymap.set('n', ']]', function()
+      vim.keymap.set('n', '<leader>n', function()
         require('illuminate').goto_next_reference(false)
       end, { desc = 'Next reference' })
-      vim.keymap.set('n', '[[', function()
+      vim.keymap.set('n', '<leader>N', function()
         require('illuminate').goto_prev_reference(false)
       end, { desc = 'Previous reference' })
     end,

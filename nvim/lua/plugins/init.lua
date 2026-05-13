@@ -24,4 +24,10 @@ return {
   { import = 'plugins.copilot' },
   { import = 'plugins.navic' },
   { import = 'plugins.illuminate' },
+  { import = 'plugins.project' },
+  { import = 'plugins.spectre' },
+  { import = 'plugins.trouble' },
+  { import = 'plugins.flash' },
+  { import = 'plugins.dressing' },
+  { import = 'plugins.render-markdown' },
 }

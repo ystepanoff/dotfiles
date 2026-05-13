@@ -14,6 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup('plugins')
 
+pcall(function() require('learn').setup() end)
+
 vim.api.nvim_create_autocmd("TermOpen", {
   pattern = "*",
   callback = function()
