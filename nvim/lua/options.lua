@@ -1,7 +1,7 @@
 local o = vim.opt
 
 o.number = true
-o.relativenumber = true
+o.relativenumber = false
 o.ignorecase = true
 o.smartcase = true
 o.wrap = false
