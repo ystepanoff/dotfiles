@@ -1,10 +1,10 @@
 return {
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'SmiteshP/nvim-navic', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'SmiteshP/nvim-navic', 'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' },
     opts = {
       options = {
-        theme = 'catppuccin',
+        theme = 'catppuccin-mocha',
         globalstatus = true,
         section_separators = { left = '', right = '' },
         component_separators = { left = '', right = '' },
