@@ -26,6 +26,11 @@ o.sidescrolloff = 8
 o.confirm = true
 o.fillchars = { eob = ' ' }
 
+vim.filetype.add({
+  extension = { gotmpl = 'gotmpl' },
+  pattern = { ['.*/templates/.*%.tpl'] = 'gotmpl', ['.*/templates/.*%.ya?ml'] = 'gotmpl' },
+})
+
 -- keep selection when indenting/dedenting in visual mode
 vim.keymap.set('v', '<', '<gv', { desc = 'Dedent and reselect' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Indent and reselect' })
