@@ -1,9 +1,6 @@
 #!/usr/bin/env zsh
 set -uo pipefail
 
-ssh-add
-tmux kill-session -t dijon 2>/dev/null || true
-
 CONFIG_DIR="$HOME/.config/tmux"
 
 log() { printf '[tmux-dijon] %s\n' "$*" >&2; }
@@ -14,6 +11,25 @@ tw() {
     return 1
   fi
 }
+
+# only prompt for ssh passphrase when no key is loaded
+ssh-add -l >/dev/null 2>&1 || ssh-add
+
+# idempotent: if the dijon session already exists, just attach.
+# set TMUX_DIJON_REBUILD=1 to force kill-and-rebuild.
+if tmux has-session -t dijon 2>/dev/null; then
+  if [[ "${TMUX_DIJON_REBUILD:-0}" == 1 ]]; then
+    log "TMUX_DIJON_REBUILD=1 — killing and rebuilding dijon"
+    tmux kill-session -t dijon 2>/dev/null || true
+  else
+    log "dijon session exists — attaching (TMUX_DIJON_REBUILD=1 to force rebuild)"
+    if [[ -n "${TMUX:-}" ]]; then
+      exec tmux switch-client -t dijon
+    else
+      exec tmux attach -t dijon
+    fi
+  fi
+fi
 
 # sanity-check helpers
 for f in "$CONFIG_DIR/ssh-loop.sh" "$CONFIG_DIR/tmux-inner-dijon-env.sh"; do

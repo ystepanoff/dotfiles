@@ -18,18 +18,34 @@ KEEPALIVE_OPTS=(
 )
 
 PS1_VALUE='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-# Use PROMPT_COMMAND to force PS1 before every prompt, surviving bash -l overrides
 SHELL_INIT='source ~/.bashrc 2>/dev/null; export __PS1="'"${PS1_VALUE}"'"; export PROMPT_COMMAND='"'"'PS1="$__PS1"'"'"'; '
 
+delay=2
+max_delay=60
+
 while true; do
-  echo "[ssh_loop] $(date '+%F %T') connecting to ${HOST} …"
+  start_ts=$(date +%s)
+  echo "[ssh_loop] $(date '+%F %T') connecting to ${HOST} (delay=${delay}s) …"
   if [[ ${#REMOTE_CMD[@]} -gt 0 ]]; then
-    # -tt to force a TTY so shells/venvs behave; never 'exec' here so the loop survives
     ssh -tt "${KEEPALIVE_OPTS[@]}" -- "${HOST}" "${SHELL_INIT}${REMOTE_CMD[*]}" || true
   else
     ssh -tt "${KEEPALIVE_OPTS[@]}" -- "${HOST}" "${SHELL_INIT}exec bash --norc" || true
   fi
   code=$?
-  echo "[ssh_loop] $(date '+%F %T') ssh exited (code ${code}). Reconnecting in 2s. Press Ctrl-C to stop."
-  sleep 2
+  end_ts=$(date +%s)
+  elapsed=$(( end_ts - start_ts ))
+
+  # Connections that lasted ≥60s reset backoff to 2s. Quick-failing
+  # connections back off exponentially up to max_delay.
+  if (( elapsed >= 60 )); then
+    delay=2
+  fi
+
+  echo "[ssh_loop] $(date '+%F %T') ssh exited (code ${code}, lasted ${elapsed}s). Reconnecting in ${delay}s. Press Ctrl-C to stop."
+  sleep "$delay"
+
+  if (( delay < max_delay )); then
+    delay=$(( delay * 2 ))
+    (( delay > max_delay )) && delay=$max_delay
+  fi
 done

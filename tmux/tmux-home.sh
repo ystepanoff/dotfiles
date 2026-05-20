@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 set -uo pipefail
 
-tmux kill-session -t home 2>/dev/null || true
-
 CONFIG_DIR="$HOME/.config/tmux"
 
 log() { printf '[tmux-home] %s\n' "$*" >&2; }
@@ -13,6 +11,22 @@ tw() {
     return 1
   fi
 }
+
+# idempotent: if the home session already exists, just attach.
+# set TMUX_HOME_REBUILD=1 to force kill-and-rebuild.
+if tmux has-session -t home 2>/dev/null; then
+  if [[ "${TMUX_HOME_REBUILD:-0}" == 1 ]]; then
+    log "TMUX_HOME_REBUILD=1 — killing and rebuilding home"
+    tmux kill-session -t home 2>/dev/null || true
+  else
+    log "home session exists — attaching (TMUX_HOME_REBUILD=1 to force rebuild)"
+    if [[ -n "${TMUX:-}" ]]; then
+      exec tmux switch-client -t home
+    else
+      exec tmux attach -t home
+    fi
+  fi
+fi
 
 pick() {
   for cmd in "$@"; do
