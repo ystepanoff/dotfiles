@@ -2,7 +2,7 @@
 set -uo pipefail
 
 ssh-add
-tmux kill-session -t dijon
+tmux kill-session -t dijon 2>/dev/null || true
 
 CONFIG_DIR="$HOME/.config/tmux"
 
@@ -72,8 +72,11 @@ tw new-window -t dijon -n nvim-1 -c "$HOME/dijon" "nvim" || true
 tmux kill-window -t dijon:bootstrap 2>/dev/null || true
 
 # --- home session baseline ---
-tw rename-window -t home:1 shell 2>/dev/null || \
+if tmux list-windows -t home -F '#I' 2>/dev/null | grep -qx 1; then
+  tw rename-window -t home:1 shell || true
+else
   tw new-window -t home -n shell || true
+fi
 
 # attach/switch
 if [[ -n "${TMUX:-}" ]]; then

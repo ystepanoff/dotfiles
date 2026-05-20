@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -uo pipefail
 
-tmux kill-session -t home
+tmux kill-session -t home 2>/dev/null || true
 
 CONFIG_DIR="$HOME/.config/tmux"
 
