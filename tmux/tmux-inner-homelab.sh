@@ -14,24 +14,23 @@ names=(
   "conway-pi-home"
 )
 
+host_options=()
+for ((i=1; i<=${#hosts}; i++)); do
+  host_options+=( "${names[i]}|${hosts[i]}" )
+done
+
 export TMUX=
 
-tmux -L "$SOCK_NAME" set -g remain-on-exit on 2>/dev/null || true
+TMUX_BIN=( tmux -L "$SOCK_NAME" )
+[[ -f "$INNER_CONF" ]] && TMUX_BIN+=( -f "$INNER_CONF" )
 
-if ! tmux -L "$SOCK_NAME" has-session -t "$SESSION_NAME" 2>/dev/null; then
-  tmux -L "$SOCK_NAME" new-session -d -s "$SESSION_NAME" -n "${names[1]}" \
-    "$SSH_LOOP ${hosts[1]}"
+"${TMUX_BIN[@]}" set -g remain-on-exit on 2>/dev/null || true
 
-  for ((i=2; i<=${#hosts}; i++)); do
-    tmux -L "$SOCK_NAME" new-window -t "$SESSION_NAME" -n "${names[i]}" \
-      "$SSH_LOOP ${hosts[i]}"
-  done
+if ! "${TMUX_BIN[@]}" has-session -t "$SESSION_NAME" 2>/dev/null; then
+  "${TMUX_BIN[@]}" new-session -d -s "$SESSION_NAME" -n shell "zsh -l"
 fi
 
-tmux -L "$SOCK_NAME" select-window -t "$SESSION_NAME:1" 2>/dev/null || true
+"${TMUX_BIN[@]}" set-option -g @host_options "${host_options[*]}"
+"${TMUX_BIN[@]}" select-window -t "$SESSION_NAME:1" 2>/dev/null || true
 
-if [[ -f "$INNER_CONF" ]]; then
-  exec tmux -L "$SOCK_NAME" -f "$INNER_CONF" attach -t "$SESSION_NAME"
-else
-  exec tmux -L "$SOCK_NAME" attach -t "$SESSION_NAME"
-fi
+exec "${TMUX_BIN[@]}" attach -t "$SESSION_NAME"

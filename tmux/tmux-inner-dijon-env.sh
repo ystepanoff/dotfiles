@@ -20,25 +20,25 @@ case "$ENV_NAME" in
     ;;
 esac
 
+# Build "name|target" pairs for the picker. Stored as a tmux option so the
+# inner tmux's keybinding can read it without re-parsing the launcher.
+host_options=()
+for svc in "${services[@]}"; do
+  host_options+=( "${svc}|${svc}.${ENV_NAME}.dijon" )
+done
+
 export TMUX=
 
-tmux -L "$SOCK_NAME" set -g remain-on-exit on 2>/dev/null || true
+TMUX_BIN=( tmux -L "$SOCK_NAME" )
+[[ -f "$INNER_CONF" ]] && TMUX_BIN+=( -f "$INNER_CONF" )
 
-if ! tmux -L "$SOCK_NAME" has-session -t "$ENV_NAME" 2>/dev/null; then
-  tmux -L "$SOCK_NAME" new-session -d -s "$ENV_NAME" -n "${services[1]}" \
-    "$SSH_LOOP ${services[1]}.${ENV_NAME}.dijon"
+"${TMUX_BIN[@]}" set -g remain-on-exit on 2>/dev/null || true
 
-  for ((i=2; i<=${#services}; i++)); do
-    svc="${services[i]}"
-    tmux -L "$SOCK_NAME" new-window -t "$ENV_NAME" -n "$svc" \
-      "$SSH_LOOP ${svc}.${ENV_NAME}.dijon"
-  done
+if ! "${TMUX_BIN[@]}" has-session -t "$ENV_NAME" 2>/dev/null; then
+  "${TMUX_BIN[@]}" new-session -d -s "$ENV_NAME" -n shell "zsh -l"
 fi
 
-tmux -L "$SOCK_NAME" select-window -t "$ENV_NAME:1" 2>/dev/null || true
+"${TMUX_BIN[@]}" set-option -g @host_options "${host_options[*]}"
+"${TMUX_BIN[@]}" select-window -t "$ENV_NAME:1" 2>/dev/null || true
 
-if [[ -f "$INNER_CONF" ]]; then
-  exec tmux -L "$SOCK_NAME" -f "$INNER_CONF" attach -t "$ENV_NAME"
-else
-  exec tmux -L "$SOCK_NAME" attach -t "$ENV_NAME"
-fi
+exec "${TMUX_BIN[@]}" attach -t "$ENV_NAME"

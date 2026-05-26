@@ -10,7 +10,7 @@ HOST="$1"; shift || true
 REMOTE_CMD=( "$@" )
 
 KEEPALIVE_OPTS=(
-  -o ServerAliveInterval=15
+  -o ServerAliveInterval=60
   -o ServerAliveCountMax=3
   -o TCPKeepAlive=yes
   -o ConnectTimeout=10
