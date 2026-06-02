@@ -12,11 +12,16 @@ tw() {
   fi
 }
 
-# idempotent: if the home session already exists, just attach.
-# set TMUX_HOME_REBUILD=1 to force kill-and-rebuild.
+# idempotent: if a fully-built home session already exists, just attach.
+# a stub home (<=1 window, e.g. left behind by another script) is rebuilt.
+# set TMUX_HOME_REBUILD=1 to force kill-and-rebuild regardless.
 if tmux has-session -t home 2>/dev/null; then
+  win_count="$(tmux list-windows -t home 2>/dev/null | grep -c .)"
   if [[ "${TMUX_HOME_REBUILD:-0}" == 1 ]]; then
     log "TMUX_HOME_REBUILD=1 — killing and rebuilding home"
+    tmux kill-session -t home 2>/dev/null || true
+  elif [[ "${win_count:-0}" -le 1 ]]; then
+    log "home session is a stub ($win_count window) — killing and rebuilding"
     tmux kill-session -t home 2>/dev/null || true
   else
     log "home session exists — attaching (TMUX_HOME_REBUILD=1 to force rebuild)"

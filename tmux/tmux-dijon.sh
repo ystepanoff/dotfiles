@@ -44,10 +44,6 @@ if ! tmux has-session -t dijon 2>/dev/null; then
      "$CONFIG_DIR/ssh-loop.sh dijon-golf-4.dijonsystems.com" || true
 fi
 
-if ! tmux has-session -t home 2>/dev/null; then
-  tw new-session -d -s home -n shell || true
-fi
-
 # --- dijon windows ---
 
 # 1) golf-4 (already created above)
@@ -86,13 +82,6 @@ tw new-window -t dijon -n nvim-1 -c "$HOME/dijon" "nvim" || true
 
 # remove bootstrap if it still exists
 tmux kill-window -t dijon:bootstrap 2>/dev/null || true
-
-# --- home session baseline ---
-if tmux list-windows -t home -F '#I' 2>/dev/null | grep -qx 1; then
-  tw rename-window -t home:1 shell || true
-else
-  tw new-window -t home -n shell || true
-fi
 
 # attach/switch
 if [[ -n "${TMUX:-}" ]]; then
