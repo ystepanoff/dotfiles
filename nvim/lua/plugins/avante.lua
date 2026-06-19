@@ -13,7 +13,7 @@ return {
         provider = "bedrock",
         providers = {
           bedrock = {
-            model       = "us.anthropic.claude-opus-4-7",
+            model       = "us.anthropic.claude-opus-4-8",
             aws_profile = "draftkingsdev",
             aws_region  = "us-east-1",
 
@@ -29,9 +29,18 @@ return {
         },
 
         auto_suggestions_provider = nil,
+
+        -- avante defaults `files.add_current` to <leader>ac, which collides with
+        -- our AvanteChat map below. On sidebar mount avante registers it GLOBALLY
+        -- (no buffer-local scope), clobbering our chat map so it can't reopen after :q.
+        mappings = {
+          files = {
+            add_current = "<leader>a.", -- moved off <leader>ac
+          },
+        },
       })
 
-      -- Opus 4.7 on Bedrock rejects `temperature`; nuke it from every place avante caches it.
+      -- Opus 4.8 on Bedrock rejects `temperature` (same request surface as 4.7); nuke it from every place avante caches it.
       pcall(function()
         local cfg = require("avante.config")
         if cfg.providers and cfg.providers.bedrock and cfg.providers.bedrock.extra_request_body then
