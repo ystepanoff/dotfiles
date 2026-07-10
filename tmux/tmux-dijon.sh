@@ -69,9 +69,9 @@ for env in golfdev imgstaging img; do
      "$CONFIG_DIR/tmux-inner-dijon-env.sh $env" || true
 done
 
-# 8) claude (interactive SSO then claude; stay in shell afterward)
+# 8) claude (stay in shell afterward)
 tw new-window -t dijon -n claude \
-  "zsh -l -i -c 'aws-cia login && cd \$HOME/dijon && claude; exec zsh -l -i'" || true
+  "zsh -l -i -c 'cd \$HOME/dijon && claude; exec zsh -l -i'" || true
 
 # 9) codex 
 tw new-window -t dijon -n codex \

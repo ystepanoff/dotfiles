@@ -64,9 +64,9 @@ fi
 # 2) shell-2
 tw new-window -t home -n shell-2 -c "$HOME" || true
 
-# 3) claude (interactive SSO then claude; stay in shell afterward)
+# 3) claude (stay in shell afterward)
 tw new-window -t home -n claude \
-  "zsh -l -i -c 'aws-cia login && cd \$HOME/sandbox/ && claude; exec zsh -l -i'" || true
+  "zsh -l -i -c 'cd \$HOME/sandbox/ && claude; exec zsh -l -i'" || true
 
 # 4) codex
 tw new-window -t home -n codex \
