@@ -10,21 +10,18 @@ return {
     event = "VeryLazy",
     config = function()
       require("avante").setup({
-        provider = "bedrock",
+        provider = "claude",
         providers = {
-          bedrock = {
-            model       = "us.anthropic.claude-opus-4-8",
-            aws_profile = "draftkingsdev",
-            aws_region  = "us-east-1",
+          claude = {
+            endpoint      = "https://litellm.prod.dkng.tools",
+            auth_type     = "api",
+            api_key_name  = "ANTHROPIC_AUTH_TOKEN",
+            model         = "us.anthropic.claude-opus-4-8",
 
             timeout = 120000,
             extra_request_body = {
-              anthropic_version = "bedrock-2023-05-31",
-              max_tokens  = 4096,
+              max_tokens = 4096,
             },
-
-            is_env_set    = function() return true end,
-            parse_api_key = function() return nil end,
           },
         },
 
@@ -40,16 +37,15 @@ return {
         },
       })
 
-      -- Opus 4.8 on Bedrock rejects `temperature` (same request surface as 4.7); nuke it from every place avante caches it.
+      -- Opus 4.8 rejects `temperature`; nuke it from every place avante caches it.
       pcall(function()
         local cfg = require("avante.config")
-        if cfg.providers and cfg.providers.bedrock and cfg.providers.bedrock.extra_request_body then
-          cfg.providers.bedrock.extra_request_body.temperature = nil
+        if cfg.providers and cfg.providers.claude and cfg.providers.claude.extra_request_body then
+          cfg.providers.claude.extra_request_body.temperature = nil
         end
 
-        -- Force the providers metatable to materialize bedrock and strip temperature there too.
         local Providers = require("avante.providers")
-        local p = Providers.bedrock
+        local p = Providers.claude
         if p and p.extra_request_body then
           p.extra_request_body.temperature = nil
         end

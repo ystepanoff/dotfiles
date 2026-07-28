@@ -8,9 +8,11 @@ INNER_CONF="$HOME/.config/tmux/tmux-inner.conf"
 SSH_LOOP="$HOME/.config/tmux/ssh-loop.sh"
 
 hosts=(
+  "conway@192.168.50.60"
   "conway@conway-pi-home.local"
 )
 names=(
+  "bella-home"
   "conway-pi-home"
 )
 
