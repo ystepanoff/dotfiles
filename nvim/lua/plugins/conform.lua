@@ -1,6 +1,9 @@
 return {
   "stevearc/conform.nvim",
   cmd = { "ConformInfo" },
+  keys = {
+    { "<leader>cf", mode = { "n", "v" }, desc = "Format file" },
+  },
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
