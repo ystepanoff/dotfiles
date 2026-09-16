@@ -1,0 +1,16 @@
+bfpricelogger-db.golf.dijon
+bfpricelogger.golf.dijon
+datagolf-db.golf.dijon
+deployhost.golf.dijon
+europeantour-db.golf.dijon
+jupyter.golf.dijon
+pgadata-db.golf.dijon
+quant.golf.dijon
+ratings-db.golf.dijon
+scraper-datagolf.golf.dijon
+scraper-europeantour.golf.dijon
+scraper-liv.golf.dijon
+scraper-pga.golf.dijon
+scraper-tourtips.golf.dijon
+weather-db.golf.dijon
+weather-scraper.golf.dijon
