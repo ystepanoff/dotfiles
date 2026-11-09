@@ -64,7 +64,7 @@ tw new-window -t dijon -n inspect \
   "$CONFIG_DIR/ssh-loop.sh deployhost.golf.dijon 'cd /home/dijon/yegor/inspect-golf-system && source venv/bin/activate && exec bash -l -i'" || true
 
 # 5–8) nested envs (inner tmux per env)
-for env in golfdev golf imgstaging img; do
+for env in golfdev imgstaging img golf; do
   tw new-window -t dijon -n "$env" \
      "$CONFIG_DIR/tmux-inner-dijon-env.sh $env" || true
 done
